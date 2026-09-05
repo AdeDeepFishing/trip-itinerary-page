@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<!-- DEMO — a fully fictional trip, built to showcase the template. No real people, places, or dates.
+     Also doubles as a worked example of SKILL.md's "add a third theme" instruction: kawaii-pink and
+     neutral-modern are kept below (unused) for reference; data-theme="lisbon-tile" is the active one. -->
+<html lang="en" data-theme="lisbon-tile">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ade × Lisbon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700;900&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root, [data-theme="kawaii-pink"]{
+    --paper:#FFF6F8; --card:#FFFFFF; --ink:#43323A; --ink-soft:#8A7078;
+    --accent:#EE4266; --accent-deep:#D22B50; --accent-pale:#FFD9E3; --accent-line:#FFC3D3;
+    --mint:#2FA79B; --amber:#FFB833; --sky:#5FA8E8; --grape:#9B72CF;
+    --radius:18px; --font-display:'Hachi Maru Pop',cursive; --font-body:'Zen Maru Gothic',sans-serif;
+  }
+  [data-theme="neutral-modern"]{
+    --paper:#F7F7F8; --card:#FFFFFF; --ink:#1F2328; --ink-soft:#6B7280;
+    --accent:#2563EB; --accent-deep:#1D4ED8; --accent-pale:#DBEAFE; --accent-line:#BFDBFE;
+    --mint:#0D9488; --amber:#D97706; --sky:#0284C7; --grape:#7C3AED;
+    --radius:14px; --font-display:'Inter',sans-serif; --font-body:'Inter',sans-serif;
+  }
+  /* ============ THEME: lisbon-tile — a destination-flavored example ============
+     Azulejo blue + white, with sun-bright terracotta/gold accents. Swap the
+     values below (not the variable names) to build a flavor for any other
+     destination — the rest of the CSS never needs to change. */
+  [data-theme="lisbon-tile"]{
+    --paper:#FBF3E7; --card:#FFFFFF; --ink:#332E28; --ink-soft:#7A7266;
+    --accent:#1F5C82; --accent-deep:#123B54; --accent-pale:#DCEAF2; --accent-line:#BBD8E6;
+    --mint:#2E8B84; --amber:#E2A63B; --sky:#4E8FB0; --grape:#B5562E;
+    --radius:14px; --font-display:'Fraunces',serif; --font-body:'Inter',sans-serif;
+  }
+  .bow, .tile-ornament, .corner-orb{display:none;}
+  [data-theme="lisbon-tile"] .tile-ornament{
+    display:inline-block; width:34px;height:34px;background:#fff;
+    transform:rotate(45deg); margin-bottom:14px; position:relative;
+    box-shadow:0 3px 0 rgba(0,0,0,.18);
+  }
+  [data-theme="lisbon-tile"] .tile-ornament::before{
+    content:""; position:absolute; inset:5px; border:2px solid var(--accent);
+  }
+  [data-theme="lisbon-tile"] .tile-ornament::after{
+    content:""; position:absolute; top:50%;left:50%;width:5px;height:5px;
+    background:var(--accent); border-radius:50%; transform:translate(-50%,-50%);
+  }
+  [data-theme="lisbon-tile"] header h1{
+    text-transform:uppercase; letter-spacing:.14em; font-weight:600;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *,*::before,*::after{animation:none!important;transition:none!important;} }
+  body{ font-family:var(--font-body); background:var(--paper); color:var(--ink); line-height:1.65; padding-bottom:70px; }
+  .wrap{max-width:680px;margin:0 auto;padding:0 16px;}
+
+  header{
+    position:relative; overflow:hidden;
+    background:linear-gradient(180deg, var(--accent-deep) 0%, var(--accent) 100%);
+    color:#fff; padding:34px 16px 30px; text-align:center;
+  }
+  header::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background-image:radial-gradient(circle, rgba(255,255,255,.14) 0 2.5px, transparent 2.5px);
+    background-size:28px 28px;
+  }
+  header > *{ position:relative; z-index:1; }
+  .corner-orb{ position:absolute; top:-30px; right:-20px; width:120px;height:120px; border-radius:50%; z-index:0; }
+  header h1{ font-family:var(--font-display); font-size:clamp(1.5rem,6vw,2.3rem); letter-spacing:.02em; }
+  header .dates{font-weight:700;margin-top:10px;font-size:.95rem;opacity:.95;}
+  header .tagline{font-size:.8rem;margin-top:4px;opacity:.9;}
+
+  .chips{ display:flex;justify-content:center;gap:8px;margin-top:12px;flex-wrap:wrap; }
+  .chip{ background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.35); color:#fff; font-size:.72rem; font-weight:700; padding:5px 12px; border-radius:999px; }
+
+  .countdown-grid{ display:flex; gap:8px; justify-content:center; margin-top:16px; flex-wrap:wrap; }
+  .cd-box{ background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); border-radius:12px; padding:8px 14px; min-width:56px; }
+  .cd-num{ font-family:var(--font-display); font-size:1.3rem; font-weight:800; color:#fff; line-height:1; font-variant-numeric:tabular-nums; }
+  .cd-label{ font-size:.6rem; letter-spacing:.08em; color:rgba(255,255,255,.75); margin-top:3px; }
+  #countdown-msg{ display:none; margin-top:14px; font-weight:900; font-size:.9rem; color:#fff; background:rgba(255,255,255,.18); padding:6px 18px; border-radius:999px; }
+
+  .wave-divider{ line-height:0; margin-top:-2px; }
+  .wave-divider svg{ display:block; width:100%; height:36px; }
+  .wave-divider path{ fill:var(--paper); }
+
+  nav.rail{ position:sticky;top:0;z-index:50; background:var(--paper); border-bottom:2px dashed var(--accent-line); padding:10px 0; }
+  .rail-scroller{ display:flex;gap:8px;overflow-x:auto;padding:4px 16px; -webkit-overflow-scrolling:touch;scrollbar-width:none; max-width:680px;margin:0 auto; }
+  .rail-scroller::-webkit-scrollbar{display:none;}
+  .stop{ flex:0 0 auto;border:none;cursor:pointer; font-family:var(--font-body);font-weight:700; background:#fff;color:var(--ink); border:2px solid var(--accent-line); border-radius:14px;padding:6px 12px;font-size:.8rem;line-height:1.3; text-align:center;transition:transform .12s ease, background .12s ease; }
+  .stop small{display:block;font-size:.65rem;color:var(--ink-soft);font-weight:500;}
+  .stop:hover{transform:translateY(-2px);}
+  .stop:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
+  .stop.active{ background:var(--accent);border-color:var(--accent-deep);color:#fff; box-shadow:0 3px 0 var(--accent-deep); }
+  .stop.active small{color:rgba(255,255,255,.85);}
+  .stop.today-chip::after{ content:"TODAY";display:block;font-size:.55rem;font-weight:900; color:var(--amber);letter-spacing:.08em; }
+  main{padding-top:26px;}
+  section.day{ background:var(--card); border:2px solid var(--accent-line); border-radius:var(--radius); margin-bottom:26px; overflow:hidden; scroll-margin-top:86px; box-shadow:0 4px 0 rgba(0,0,0,.05); }
+  .day-head{ display:flex;align-items:center;gap:12px; padding:16px 18px; border-bottom:2px dashed var(--accent-line); }
+  .day-badge{ flex:0 0 auto;width:52px;height:52px;border-radius:50%; display:flex;flex-direction:column;align-items:center;justify-content:center; color:#fff;font-weight:900;line-height:1.05; border:3px solid rgba(255,255,255,.55); box-shadow:0 0 0 3px currentColor; }
+  .day-badge .d{font-size:1.15rem;} .day-badge .m{font-size:.55rem;letter-spacing:.05em;}
+  .day-head h2{ font-family:var(--font-display); font-size:1.05rem;line-height:1.4; }
+  .day-head .sub{font-size:.78rem;color:var(--ink-soft);font-weight:500;}
+  .timeline{padding:14px 18px 18px;}
+  .item{ display:grid;grid-template-columns:64px 1fr;gap:10px; padding:10px 0; border-bottom:1px dotted var(--accent-line); }
+  .item:last-child{border-bottom:none;}
+  .time{ font-weight:900;font-size:.82rem;color:var(--accent-deep); padding-top:2px;white-space:nowrap; }
+  .what strong{font-size:.95rem;} .what p{font-size:.84rem;color:var(--ink-soft);margin-top:2px;}
+  .tags{margin-top:5px;display:flex;flex-wrap:wrap;gap:5px;}
+  .tag{ font-size:.62rem;font-weight:900;letter-spacing:.05em; padding:2px 9px;border-radius:999px;color:#fff; }
+  .tag.free{background:var(--mint);} .tag.book{background:var(--amber);color:#4a3300;}
+  .tag.price{background:var(--sky);} .tag.highlight{background:var(--accent);}
+  .tag.transit{background:var(--grape);} .tag.solo{background:color-mix(in srgb, var(--accent) 65%, white);}
+  .note{ margin:0 18px 18px;background:var(--accent-pale);border-radius:12px; padding:10px 14px;font-size:.8rem;font-weight:500; }
+  .note b{color:var(--accent-deep);}
+  .panel{ background:var(--card);border:2px solid var(--accent-line);border-radius:var(--radius); padding:18px;margin-bottom:26px;box-shadow:0 4px 0 rgba(0,0,0,.05); }
+  .panel h3{ font-family:var(--font-display); font-size:1rem;margin-bottom:10px; color:var(--accent-deep); }
+  .check{list-style:none;}
+  .check li{ display:flex;gap:10px;align-items:flex-start; padding:7px 0;border-bottom:1px dotted var(--accent-line); font-size:.86rem; }
+  .check li:last-child{border-bottom:none;}
+  .check input{ accent-color:var(--accent);width:18px;height:18px;margin-top:3px;flex:0 0 auto; }
+  .check label{cursor:pointer;}
+  .check input:checked + label{color:var(--ink-soft);text-decoration:line-through;}
+  .panel p.small{font-size:.75rem;color:var(--ink-soft);margin-top:8px;}
+  .info-grid{display:grid;gap:8px;font-size:.85rem;}
+  .info-grid div{background:var(--paper);border-radius:10px;padding:9px 12px;}
+  .info-grid b{color:var(--accent-deep);}
+  footer{ text-align:center;font-size:.75rem;color:var(--ink-soft); padding:10px 16px 30px; }
+  footer .heart{color:var(--accent);} footer .signature{color:var(--accent-deep);font-weight:900;text-decoration:none;}
+  footer .signature:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="corner-orb" aria-hidden="true"></div>
+  <div class="tile-ornament" aria-hidden="true"></div>
+  <h1>ADE × LISBON</h1>
+  <div class="tagline">first time in Portugal ♡</div>
+  <div class="dates">2026.9.20 (Sun) 〜 9.27 (Sun) · 7 nights</div>
+  <div class="chips">
+    <span class="chip">7 nights</span>
+    <span class="chip">8 days</span>
+    <span class="chip">✈ round trip</span>
+  </div>
+  <div class="countdown-grid" id="countdown-grid">
+    <div class="cd-box"><div class="cd-num" id="cd-d">00</div><div class="cd-label">DAYS</div></div>
+    <div class="cd-box"><div class="cd-num" id="cd-h">00</div><div class="cd-label">HRS</div></div>
+    <div class="cd-box"><div class="cd-num" id="cd-m">00</div><div class="cd-label">MIN</div></div>
+    <div class="cd-box"><div class="cd-num" id="cd-s">00</div><div class="cd-label">SEC</div></div>
+  </div>
+  <div id="countdown-msg"></div>
+</header>
+<div class="wave-divider" aria-hidden="true"><svg viewBox="0 0 1440 48" preserveAspectRatio="none"><path d="M0,24 C240,48 480,0 720,16 C960,32 1200,48 1440,16 L1440,48 L0,48 Z"/></svg></div>
+
+<nav class="rail" aria-label="Days"><div class="rail-scroller" id="rail"></div></nav>
+
+<main class="wrap">
+
+  <section class="day" id="d1" data-date="2026-09-20" data-color="var(--accent)" data-title="Arrival">
+    <div class="day-head">
+      <div class="day-badge" style="background:var(--accent);color:var(--accent);"><span class="d">20</span><span class="m">SUN</span></div>
+      <div><h2>Welcome to Lisbon! ✈️</h2><div class="sub">Airport → hotel · take it easy tonight</div></div>
+    </div>
+    <div class="timeline">
+      <div class="item"><div class="time">16:20</div><div class="what">
+        <strong>Land at Humberto Delgado (LIS)</strong>
+        <p>Immigration + bags, probably out by 17:15. Grab a Viva Viagem card at the airport metro machine before heading out.</p>
+        <div class="tags"><span class="tag book">SET UP ONCE</span></div>
+      </div></div>
+      <div class="item"><div class="time">17:30</div><div class="what">
+        <strong>Red Line to Baixa-Chiado</strong>
+        <p>One line, no transfers, about 20 minutes. Then a short walk to the hotel.</p>
+        <div class="tags"><span class="tag transit">METRO, RED LINE</span></div>
+      </div></div>
+      <div class="item"><div class="time">19:00</div><div class="what">
+        <strong>Dinner near the hotel</strong>
+        <p>Something casual — a long travel day, keep it simple.</p>
+      </div></div>
+      <div class="item"><div class="time">20:30</div><div class="what">
+        <strong>Pastel de nata, obviously 🍮</strong>
+        <p>The first one has to happen tonight. Non-negotiable.</p>
+        <div class="tags"><span class="tag free">A RITUAL</span></div>
+      </div></div>
+    </div>
+    <div class="note"><b>Tonight's rule:</b> no sightseeing. Rest wins.</div>
+  </section>
+
+  <section class="day" id="d2" data-date="2026-09-21" data-color="var(--mint)" data-title="Alfama">
+    <div class="day-head">
+      <div class="day-badge" style="background:var(--mint);color:var(--mint);"><span class="d">21</span><span class="m">MON</span></div>
+      <div><h2>Alfama + a viewpoint or three</h2><div class="sub">Old town wandering, hills included</div></div>
+    </div>
+    <div class="timeline">
+      <div class="item"><div class="time">10:00</div><div class="what">
+        <strong>Tram 28 through Alfama</strong>
+        <p>The famous yellow tram, best ridden early before the crowds. Hop off wherever looks interesting.</p>
+        <div class="tags"><span class="tag price">€3</span></div>
+      </div></div>
+      <div class="item"><div class="time">11:30</div><div class="what">
+        <strong>Miradouro das Portas do Sol</strong>
+        <p>A viewpoint over the rooftops and the river. Free, and worth the climb.</p>
+        <div class="tags"><span class="tag free">FREE</span></div>
+      </div></div>
+      <div class="item"><div class="time">13:00</div><div class="what">
+        <strong>Solo: São Jorge Castle, if wanted</strong>
+        <p>A ticketed hilltop castle — easy to do solo while the other half of the trip runs an errand nearby.</p>
+        <div class="tags"><span class="tag solo">SOLO OK</span><span class="tag book">TICKETED</span></div>
+      </div></div>
+      <div class="item"><div class="time">19:00</div><div class="what">
+        <strong>Fado dinner 🎶</strong>
+        <p>A small casa de fado for dinner and live music — the trip's one splurge night.</p>
+        <div class="tags"><span class="tag highlight">DON'T SKIP THIS</span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="day" id="d3" data-date="2026-09-22" data-color="var(--sky)" data-title="Sintra">
+    <div class="day-head">
+      <div class="day-badge" style="background:var(--sky);color:var(--sky);"><span class="d">22</span><span class="m">TUE</span></div>
+      <div><h2>Sintra day trip 🏰</h2><div class="sub">Train from Rossio, go early</div></div>
+    </div>
+    <div class="timeline">
+      <div class="item"><div class="time">8:15</div><div class="what">
+        <strong>Train from Rossio Station</strong>
+        <p>About 40 minutes. Go early — the palace lines get long by midday.</p>
+        <div class="tags"><span class="tag transit">TRAIN</span></div>
+      </div></div>
+      <div class="item"><div class="time">9:30</div><div class="what">
+        <strong>Pena Palace</strong>
+        <p>The colorful hilltop palace everyone's seen in photos. Book timed entry in advance.</p>
+        <div class="tags"><span class="tag book">BOOK AHEAD</span><span class="tag price">€20</span></div>
+      </div></div>
+      <div class="item"><div class="time">14:00</div><div class="what">
+        <strong>Quinta da Regaleira</strong>
+        <p>The spiral well and the gardens — a slower, moodier contrast to Pena's color.</p>
+        <div class="tags"><span class="tag price">€12</span></div>
+      </div></div>
+    </div>
+    <div class="note"><b>Wear real shoes today.</b> Sintra is all cobblestones and hills.</div>
+  </section>
+
+  <section class="day" id="d4" data-date="2026-09-23" data-color="var(--grape)" data-title="Belém">
+    <div class="day-head">
+      <div class="day-badge" style="background:var(--grape);color:var(--grape);"><span class="d">23</span><span class="m">WED</span></div>
+      <div><h2>Belém: monastery + monuments</h2><div class="sub">Riverside history, and the original nata</div></div>
+    </div>
+    <div class="timeline">
+      <div class="item"><div class="time">10:00</div><div class="what">
+        <strong>Jerónimos Monastery</strong>
+        <p>UNESCO-listed, the most elaborate Manueline stonework in the city. The cloister alone is worth the ticket.</p>
+        <div class="tags"><span class="tag book">BOOK AHEAD</span><span class="tag price">€15</span></div>
+      </div></div>
+      <div class="item"><div class="time">12:00</div><div class="what">
+        <strong>Pastéis de Belém — the original bakery</strong>
+        <p>The recipe's birthplace. Eat it warm with cinnamon, right there, not saved for later.</p>
+        <div class="tags"><span class="tag highlight">THE ORIGINAL</span></div>
+      </div></div>
+      <div class="item"><div class="time">13:30</div><div class="what">
+        <strong>Belém Tower + riverside walk</strong>
+        <p>The 16th-century tower guarding the river mouth, then a flat, easy walk along the water back toward MAAT.</p>
+        <div class="tags"><span class="tag price">€6</span><span class="tag free">WALK IS FREE</span></div>
+      </div></div>
+      <div class="item"><div class="time">16:00</div><div class="what">
+        <strong>Solo: MAAT museum, if wanted</strong>
+        <p>The riverside art/architecture/tech museum with a walkable rooftop — easy solo detour.</p>
+        <div class="tags"><span class="tag solo">SOLO OK</span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="day" id="d5" data-date="2026-09-24" data-color="var(--amber)" data-title="Chiado + LX">
+    <div class="day-head">
+      <div class="day-badge" style="background:var(--amber);color:var(--amber);"><span class="d">24</span><span class="m">THU</span></div>
+      <div><h2>Chiado, LX Factory + sunset</h2><div class="sub">Shopping by day, rooftops by golden hour</div></div>
+    </div>
+    <div class="timeline">
+      <div class="item"><div class="time">11:00</div><div class="what">
+        <strong>Chiado: bookshops + boutiques</strong>
+        <p>Bertrand (the world's oldest operating bookshop) and the elegant streets around it.</p>
+        <div class="tags"><span class="tag free">FREE TO BROWSE</span></div>
+      </div></div>
+      <div class="item"><div class="time">13:30</div><div class="what">
+        <strong>LX Factory</strong>
+        <p>An old industrial complex under the 25 de Abril bridge, now studios, shops, and murals. Lunch here.</p>
+        <div class="tags"><span class="tag free">FREE TO WANDER</span></div>
+      </div></div>
+      <div class="item"><div class="time">18:30</div><div class="what">
+        <strong>Sunset: Miradouro de Santa Catarina</strong>
+        <p>A laid-back viewpoint over the river, popular but rarely crowded-crowded. Bring a drink from the kiosk.</p>
+        <div class="tags"><span class="tag free">FREE</span></div>
+      </div></div>
+      <div class="item"><div class="time">20:30</div><div class="what">
+        <strong>Bairro Alto dinner + wander</strong>
+        <p>The nightlife district by dark — tiny bars, open doors, music spilling into the street.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="day" id="d6" data-date="2026-09-25" data-color="var(--mint)" data-title="Cascais">
+    <div class="day-head">
+      <div class="day-badge" style="background:var(--mint);color:var(--mint);"><span class="d">25</span><span class="m">FRI</span></div>
+      <div><h2>Cascais + Cabo da Roca</h2><div class="sub">Coast day, westernmost point of mainland Europe</div></div>
+    </div>
+    <div class="timeline">
+      <div class="item"><div class="time">9:00</div><div class="what">
+        <strong>Train to Cascais</strong>
+        <p>About 40 minutes along the coast from Cais do Sodré. Scenic the whole way.</p>
+        <div class="tags"><span class="tag transit">TRAIN</span></div>
+      </div></div>
+      <div class="item"><div class="time">10:00</div><div class="what">
+        <strong>Boca do Inferno</strong>
+        <p>"Mouth of Hell" — a dramatic sea cave/cliff formation, a short walk from town.</p>
+        <div class="tags"><span class="tag free">FREE</span></div>
+      </div></div>
+      <div class="item"><div class="time">13:00</div><div class="what">
+        <strong>Cabo da Roca</strong>
+        <p>The westernmost point of continental Europe — a lighthouse, cliffs, and the edge of the map. Needs a bus or taxi from Cascais.</p>
+        <div class="tags"><span class="tag transit">BUS FROM CASCAIS</span><span class="tag highlight">EDGE OF EUROPE</span></div>
+      </div></div>
+      <div class="item"><div class="time">17:00</div><div class="what">
+        <strong>Beach time back in Cascais</strong>
+        <p>Wind down with the locals before the train back.</p>
+        <div class="tags"><span class="tag free">FREE</span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="day" id="d7" data-date="2026-09-26" data-color="var(--sky)" data-title="Market + shops">
+    <div class="day-head">
+      <div class="day-badge" style="background:var(--sky);color:var(--sky);"><span class="d">26</span><span class="m">SAT</span></div>
+      <div><h2>Markets, boutiques + farewell dinner</h2><div class="sub">Last full day — souvenirs and one big meal</div></div>
+    </div>
+    <div class="timeline">
+      <div class="item"><div class="time">11:00</div><div class="what">
+        <strong>Time Out Market (Mercado da Ribeira)</strong>
+        <p>A food hall curated from the city's best kitchens — easy way to sample a lot in one stop.</p>
+        <div class="tags"><span class="tag price">VARIES</span></div>
+      </div></div>
+      <div class="item"><div class="time">13:30</div><div class="what">
+        <strong>Príncipe Real: boutiques + ceramics</strong>
+        <p>The neighborhood for independent design shops and the good azulejo tile souvenirs, the real ones.</p>
+        <div class="tags"><span class="tag free">FREE TO BROWSE</span></div>
+      </div></div>
+      <div class="item"><div class="time">19:30</div><div class="what">
+        <strong>Farewell dinner 🍷</strong>
+        <p>Somewhere unhurried. Last night, no agenda after this.</p>
+        <div class="tags"><span class="tag highlight">THE BIG ONE</span></div>
+      </div></div>
+    </div>
+    <div class="note"><b>Pack tonight,</b> not tomorrow morning. Flight's early.</div>
+  </section>
+
+  <section class="day" id="d8" data-date="2026-09-27" data-color="var(--grape)" data-title="Departure">
+    <div class="day-head">
+      <div class="day-badge" style="background:var(--grape);color:var(--grape);"><span class="d">27</span><span class="m">SUN</span></div>
+      <div><h2>See you soon, Lisbon 🥲</h2><div class="sub">Morning flight home</div></div>
+    </div>
+    <div class="timeline">
+      <div class="item"><div class="time">8:00</div><div class="what">
+        <strong>One last pastel de nata</strong>
+        <p>A bakery near the hotel, coffee to go. The correct way to leave a city.</p>
+        <div class="tags"><span class="tag free">FINAL RITUAL</span></div>
+      </div></div>
+      <div class="item"><div class="time">9:00</div><div class="what">
+        <strong>Red Line → airport</strong>
+        <p>Same line, opposite direction. About 25 minutes.</p>
+        <div class="tags"><span class="tag transit">METRO, RED LINE</span></div>
+      </div></div>
+      <div class="item"><div class="time">10:00</div><div class="what">
+        <strong>Check in, comfortable buffer before boarding</strong>
+        <p>Duty-free run for last-minute conserva tins and vinho verde.</p>
+      </div></div>
+    </div>
+    <div class="note"><b>Already planning the next one.</b> 💌</div>
+  </section>
+
+  <div class="panel">
+    <h3>📋 Book / prep before landing</h3>
+    <ul class="check" id="checklist">
+      <li><input type="checkbox" id="c1"><label for="c1">Pena Palace timed-entry tickets</label></li>
+      <li><input type="checkbox" id="c2"><label for="c2">Jerónimos Monastery tickets</label></li>
+      <li><input type="checkbox" id="c3"><label for="c3">Fado dinner reservation</label></li>
+      <li><input type="checkbox" id="c4"><label for="c4">Viva Viagem card topped up</label></li>
+      <li><input type="checkbox" id="c5"><label for="c5">Farewell dinner reservation for the last night</label></li>
+    </ul>
+    <p class="small">Checkboxes reset when the page reloads — they're just for tracking in the moment.</p>
+  </div>
+
+  <div class="panel">
+    <h3>🆘 Essentials</h3>
+    <div class="info-grid">
+      <div><b>Staying at:</b> Hotel Alfama Azul, a few minutes from the river</div>
+      <div><b>If we get separated:</b> Praça do Comércio, by the arch</div>
+      <div><b>Emergency number:</b> 112 (Portugal — police, ambulance, fire, all one number)</div>
+      <div><b>Weather plan:</b> mornings for hills, afternoons for shade and pastries</div>
+      <div><b>Cash/cards:</b> cards work almost everywhere, small cafés sometimes cash-only</div>
+      <div><b>Metro stops running</b> around 1am. Check the last train before a late dinner</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  made with <span class="heart">♥</span> by <a class="signature" href="https://www.yanwensworld.com/" target="_blank" rel="noopener">Yanwen</a> · demo trip, built to show off the template
+</footer>
+
+<script>
+(function(){
+  var days = Array.prototype.slice.call(document.querySelectorAll('section.day'));
+  var rail = document.getElementById('rail');
+  var todayStr = (function(){
+    var n = new Date();
+    return n.getFullYear() + '-' + String(n.getMonth()+1).padStart(2,'0') + '-' + String(n.getDate()).padStart(2,'0');
+  })();
+
+  days.forEach(function(sec){
+    var d = sec.dataset.date.split('-');
+    var wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(sec.dataset.date + 'T00:00:00').getDay()];
+    var btn = document.createElement('button');
+    btn.className = 'stop';
+    btn.innerHTML = d[1] + '/' + d[2] + ' ' + wd + '<small>' + sec.dataset.title + '</small>';
+    btn.setAttribute('aria-label', 'Go to ' + sec.dataset.title);
+    if (sec.dataset.date === todayStr) btn.classList.add('today-chip');
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.stop').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      sec.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    rail.appendChild(btn);
+  });
+
+  var stops = Array.prototype.slice.call(rail.children);
+  var lastIdx = -1;
+  function syncActive(){
+    var idx = 0;
+    for (var i = 0; i < days.length; i++){ if (days[i].getBoundingClientRect().top < 140) idx = i; }
+    if (idx === lastIdx) return;
+    lastIdx = idx;
+    stops.forEach(function(b, i){ b.classList.toggle('active', i === idx); });
+    var btn = stops[idx];
+    var railRect = rail.getBoundingClientRect();
+    var btnRect = btn.getBoundingClientRect();
+    var target = rail.scrollLeft + (btnRect.left - railRect.left) - (railRect.width / 2) + (btnRect.width / 2);
+    rail.scrollTo({left: Math.max(0, target), behavior: 'smooth'});
+  }
+  window.addEventListener('scroll', syncActive, {passive:true});
+  syncActive();
+
+  var arrive = new Date('2026-09-20T16:20:00+01:00');
+  var depart = new Date('2026-09-27T12:00:00+01:00');
+  var cdGrid = document.getElementById('countdown-grid');
+  var cdMsg = document.getElementById('countdown-msg');
+  var scrolledToday = false;
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function tick(){
+    var now = new Date();
+    if (now < arrive){
+      var diff = arrive - now;
+      cdGrid.style.display = 'flex';
+      cdMsg.style.display = 'none';
+      document.getElementById('cd-d').textContent = pad(Math.floor(diff / 86400000));
+      document.getElementById('cd-h').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+      document.getElementById('cd-m').textContent = pad(Math.floor((diff % 3600000) / 60000));
+      document.getElementById('cd-s').textContent = pad(Math.floor((diff % 60000) / 1000));
+    } else if (now <= depart){
+      cdGrid.style.display = 'none';
+      cdMsg.style.display = 'inline-block';
+      var dayNum = Math.floor((now - new Date(days[0].dataset.date + 'T00:00:00')) / 86400000) + 1;
+      cdMsg.textContent = 'Day ' + dayNum + ' of the trip 🎉';
+      if (!scrolledToday){
+        scrolledToday = true;
+        var todaySec = days.filter(function(s){ return s.dataset.date === todayStr; })[0];
+        if (todaySec) setTimeout(function(){ todaySec.scrollIntoView({behavior:'smooth', block:'start'}); }, 400);
+      }
+    } else {
+      cdGrid.style.display = 'none';
+      cdMsg.style.display = 'inline-block';
+      cdMsg.textContent = 'Trip complete 💌';
+    }
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+</body>
+</html>

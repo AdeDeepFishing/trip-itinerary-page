@@ -4,8 +4,7 @@ A [Claude Skill](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/o
 
 Built out of a real trip (see: three weeks of back-and-forth planning a friend's first visit to Tokyo, argued about every train line and diet-of-udon decision along the way). Generalized here so it works for any trip, any traveler, any destination.
 
-<img width="800" height="450" alt="ScreenRecording2026-09-06at11 19 11AM-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/c3a0ad6d-6f12-46d7-a01b-ca8bbfb05bce" />
-
+![The generated itinerary page: sticky day tabs that follow the scroll, timeline activity cards, a prep checklist, and an essentials panel](docs/demo.gif)
 
 *Above: a fictional week in Lisbon, built with this skill.* **[▶ Open it live](https://adedeepfishing.github.io/trip-itinerary-page/examples/demo-lisbon-trip.html)**
 

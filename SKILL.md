@@ -18,7 +18,7 @@ Start from `assets/template.html`. Do not build this from scratch — the templa
 - **Exact arrival and departure date+time, and which timezone they're written in.** This is the single most common source of errors — see the pitfall below before you hardcode anything.
 - The day-by-day plan, if it's already been discussed — pull it from the conversation rather than re-asking
 - Any home base, private address, or meeting point that will appear on the page
-- Theme preference (see Themes below) — if the user doesn't care, default to `kawaii-pink`, it's the most tested
+- Theme preference, if the user has one — otherwise don't ask, build one from the destination (see step 3)
 
 Don't block on having every detail. Draft with placeholders (`[fill in]`) for anything missing and flag them clearly in your reply, rather than stalling the whole page on one unknown.
 
@@ -32,16 +32,30 @@ Pattern that works well for the private-home case: replace the specific location
 
 Apply this consistently: if a specific place name appears in more than one spot (e.g. a home neighborhood mentioned both in an "essentials" card AND inside a route description like "take the train to X"), sanitize *all* of them the same way. A single redacted card next to three casual mentions of the real name defeats the point.
 
-### 3. Pick a theme
+### 3. Build a theme from the destination
 
-The template ships with two full themes, switched by one attribute:
+Every trip has a destination, so every page gets a theme drawn from that destination. Don't ask the user to pick one and don't ship a generic default — a page themed to where they're actually going is the difference between a document and something they want to open.
+
+The two themes in the template are **starting points to copy, not a menu**: `kawaii-pink` (warm, soft, decorative) and `neutral-modern` (restrained, typographic). Pick whichever is closer in temperature to the destination, then retheme it.
+
+The theme is one attribute:
 
 ```html
-<html data-theme="kawaii-pink">   <!-- or -->
-<html data-theme="neutral-modern">
+<html data-theme="lisbon-tile">
 ```
 
-Everything else — fonts, colors, the decorative header shape — follows automatically from that one value; you don't need to touch the rest of the CSS to switch. To add a third theme, copy one of the `[data-theme="..."]` CSS blocks near the top of the file, rename it, and adjust the variables — see `examples/demo-lisbon-trip.html` for a worked example (a custom `lisbon-tile` theme built this way, azulejo blue + terracotta instead of the two defaults).
+Everything else — fonts, colors, the decorative header shape — follows automatically from that one value; you don't need to touch the rest of the CSS. To build a destination theme: copy the `[data-theme="..."]` CSS block nearest in feel, rename it after the place, and adjust the color variables.
+
+Pull three or four colors from something the place is actually known for — a material, a landscape, a building tradition, a light quality. Lisbon's azulejo blue and terracotta. Kyoto's temple vermilion against cedar. Reykjavík's slate and moss. Look for what someone who's been there would recognize, not the flag colors and not the first stock photo.
+
+`examples/demo-lisbon-trip.html` is exactly this, done once — a `lisbon-tile` theme built by copying a base block and swapping the variables.
+
+Two ways this goes wrong:
+
+- **Overdoing it.** The theme lives in the palette and one or two decorative elements. Don't add clip art, emoji rows, or a second font per destination — legibility on a phone at 8am beats atmosphere.
+- **Reaching too hard.** If a place resists an obvious palette, theme the *trip* instead — a winter city break, a coastal week, a work trip with weekends attached. That's still specific to them, and it beats a forced cliché.
+
+Only override this if the user asks for a specific theme, or asks for one of the two base themes by name.
 
 The header already includes a gradient background with a soft dot texture, a wave-shaped divider into the page below it, a stat "chips" row, and an optional decorative corner accent (`.corner-orb`) and small icon (like `.bow` for kawaii-pink) that each theme can turn on or leave off — you don't need to rebuild any of this, just fill in the chip text and swap which decorative elements show for a new theme (see how `.bow`/`.tile-ornament`/`.corner-orb` are scoped per `data-theme` near the top of the CSS).
 
@@ -83,7 +97,7 @@ This is built automatically from whatever `.day` sections exist — you don't ne
 
 - [ ] Arrival/departure dates and timezones are correct (re-read step 5)
 - [ ] No literal home address or exact private location anywhere in the file, including inside route descriptions, not just the essentials card
-- [ ] The theme attribute matches what the user asked for
+- [ ] The theme is drawn from the destination (or from what the user explicitly asked for), not left on a base theme
 - [ ] Nav auto-scroll still works if you modified the script
 - [ ] Checkboxes visibly cross out their label when checked
 - [ ] Save to the output/deliverable location and present the file to the user (use whichever file-delivery tool is available in this environment; if none exists, tell the user the file path directly)

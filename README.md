@@ -15,11 +15,11 @@ Built out of a real trip (see: three weeks of back-and-forth planning a friend's
 - **Timeline-style activity cards** per day, with tags for free / needs booking / price / transit / solo-friendly / a custom "highlight" tag for whatever the trip's own flavor is
 - **A booking/prep checklist**
 - **An "essentials" panel** — meeting points, emergency numbers, weather plan, cash notes — with a built-in pattern for keeping a real home address out of a page that might get shared or hosted publicly
-- **Two themes**, swappable with one HTML attribute: `kawaii-pink` and `neutral-modern`
+- **A theme drawn from the destination** — colors pulled from what the place is actually known for (Lisbon's azulejo blue and terracotta, Kyoto's temple vermilion), not a generic template look. Two base themes ship as starting points to retheme, and it's all one HTML attribute
 
 ## Demo
 
-[`examples/demo-lisbon-trip.html`](examples/demo-lisbon-trip.html) is a fully fictional trip — no real people, places, or dates — built to show every feature at once: a full 7-night week, a custom destination-flavored theme (azulejo blue + terracotta, built on top of the two base themes as a worked example of "add a third theme"), all six tag types, the checklist, and the essentials panel using the privacy pattern for real. [See it live](https://adedeepfishing.github.io/trip-itinerary-page/examples/demo-lisbon-trip.html), or open the file directly in a browser.
+[`examples/demo-lisbon-trip.html`](examples/demo-lisbon-trip.html) is a fully fictional trip — no real people, places, or dates — built to show every feature at once: a full 7-night week, a custom destination-flavored theme (azulejo blue + terracotta, built by copying a base theme and swapping the color variables), all six tag types, the checklist, and the essentials panel using the privacy pattern for real. [See it live](https://adedeepfishing.github.io/trip-itinerary-page/examples/demo-lisbon-trip.html), or open the file directly in a browser.
 
 ## Installing it
 

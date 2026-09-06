@@ -2,11 +2,11 @@
 
 A [Claude Skill](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview) that turns a day-by-day trip plan into a single-file, shareable itinerary website — no build step, no backend, works on a phone.
 
+Built out of a real trip (see: three weeks of back-and-forth planning a friend's first visit to Tokyo, argued about every train line and diet-of-udon decision along the way). Generalized here so it works for any trip, any traveler, any destination.
+
 ![The generated itinerary page: sticky day tabs that follow the scroll, timeline activity cards, a prep checklist, and an essentials panel](docs/demo.gif)
 
-**[▶ Open the live demo](https://adedeepfishing.github.io/trip-itinerary-page/examples/demo-lisbon-trip.html)**
-
-Built out of a real trip (see: three weeks of back-and-forth planning a friend's first visit to Tokyo, argued about every train line and diet-of-udon decision along the way). Generalized here so it works for any trip, any traveler, any destination.
+*Above: a fictional week in Lisbon, built with this skill.* **[▶ Open it live](https://adedeepfishing.github.io/trip-itinerary-page/examples/demo-lisbon-trip.html)**
 
 ## What it makes
 

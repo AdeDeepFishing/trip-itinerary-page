@@ -32,9 +32,19 @@ git clone https://github.com/AdeDeepFishing/trip-itinerary-page.git ~/.claude/sk
 
 That makes it available in every project. To scope it to one project instead, clone into `.claude/skills/` inside that repo.
 
+**OpenAI Codex CLI** — same skill, no changes needed; Codex just reads a different folder:
+
+```bash
+git clone https://github.com/AdeDeepFishing/trip-itinerary-page.git ~/.agents/skills/trip-itinerary-page
+```
+
+Use `.agents/skills/` inside a repo to scope it to one project.
+
 **claude.ai (web / desktop)** — download `trip-itinerary-page.skill` from [Releases](https://github.com/AdeDeepFishing/trip-itinerary-page/releases/latest), then upload it under Settings → Capabilities → Skills.
 
 **API / Agent SDK** — point your skills directory at a checkout of this repo, or bundle `SKILL.md` and `assets/` with your agent.
+
+**Anything else** — `SKILL.md` is plain Markdown with `name` / `description` frontmatter and no vendor-specific calls, so any agent that can read a file and follow instructions can use it. Worst case, point your agent at `SKILL.md` directly and ask it to follow along.
 
 ## Using it
 
